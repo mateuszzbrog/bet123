@@ -81,4 +81,11 @@ public class BetService {
         List<Bet> bets = betDao.getAllBetByUserId(userId);
         return bets;
     }
+    
+    public Bet getLastBet(){
+    	DAOFactory factory = DAOFactory.getDAOFactory();
+        BetDAO betDao = factory.getBetDAO();
+        List<Bet> bet = betDao.getLastBet();
+        return bet.get(0);
+    }
 }

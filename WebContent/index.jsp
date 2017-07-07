@@ -56,7 +56,9 @@
   				<c:if test="${not empty requestScope.users}">
         			<c:forEach var="userr" items="${requestScope.users}">
         				<tr>
-        					<td>1</td>
+        					<td>
+        						<c:out value="${userr.id}" />
+        					</td>
         					<td>
         						<c:out value="${userr.username}" />
         					</td>

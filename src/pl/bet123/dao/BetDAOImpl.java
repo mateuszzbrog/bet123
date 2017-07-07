@@ -32,6 +32,7 @@ public class BetDAOImpl implements BetDAO {
             + "FROM bet WHERE user_id = :user_id ;";
     private static final String UPDATE_POINTS = "UPDATE bet SET points=:points WHERE bet_id=:bet_id;";
     
+    private static final String READ_LAST_BET = "SELECT bet_id, match_id, user_id, goals_a, goals_b, date, points FROM bet WHERE bet_id = (SELECT max(bet_id) from bet) ; ";
     
     private NamedParameterJdbcTemplate template;
     
@@ -65,7 +66,7 @@ public class BetDAOImpl implements BetDAO {
         try {
         	bet = template.queryForObject(READ_BET, paramSource, new BetRowMapper());
         } catch(EmptyResultDataAccessException e) {
-            //vote not found
+            //bet not found
         }
         return bet;
 	}
@@ -119,7 +120,7 @@ public class BetDAOImpl implements BetDAO {
         try {
         	bet = template.queryForObject(READ_BET_BY_MATCH_USE_IDS, paramSource, new BetRowMapper());
         } catch(EmptyResultDataAccessException e) {
-            //vote not found
+            //bet not found
         }
         return bet;
 	}
@@ -132,10 +133,15 @@ public class BetDAOImpl implements BetDAO {
     	try {
         	bets = template.query(READ_ALL_BET_BY_USER_ID, paramSource, new BetRowMapper());
         } catch(EmptyResultDataAccessException e) {
-            //vote not found
+            //bet not found
         }
         return bets;
     }
+	
+	public List<Bet> getLastBet(){
+		List<Bet> bet = template.query(READ_LAST_BET, new BetRowMapper());
+        return bet;
+	}
 	
 	private class BetRowMapper implements RowMapper<Bet> {
         @Override
@@ -149,7 +155,6 @@ public class BetDAOImpl implements BetDAO {
             bet.setGoalsB(resultSet.getInt("goals_b"));
             bet.setPoints(resultSet.getInt("points"));
             return bet;
-        }
-         
+        }   
     }
 }

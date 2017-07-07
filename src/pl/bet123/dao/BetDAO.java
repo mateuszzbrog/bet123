@@ -11,4 +11,6 @@ public interface BetDAO extends GenericDAO<Bet, Long> {
 	public List<Bet> getAllBetByUserId(long userId);
 
 	public boolean updatePoints(Bet bet);
+
+	public List<Bet> getLastBet();
 }

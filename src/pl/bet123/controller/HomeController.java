@@ -33,7 +33,8 @@ public class HomeController extends HttpServlet {
         List<User> allUsers = userService.getAllUsers();
         List<Match> allMatches = matchService.getAllMatch();
         Match match, finalMatch = null;
-        for(int i=0; i<33; i++){
+        long howManyBet =  (int) betService.getLastBet().getId();
+        for(int i=0; i<=howManyBet; i++){
         	//bierzemy ka¿dy bet(typ bukmacherski) po kolei
         	Bet bet = betService.getBetById(i);
         	if(bet != null){
@@ -85,7 +86,12 @@ public class HomeController extends HttpServlet {
                 return 0;
             }
         });
+        for(int i=0;i<allUsers.size();i++){
+        	allUsers.get(i).setId(i+1);
+        }
+        
         request.setAttribute("users", allUsers);
+        
     }
 	
 }
